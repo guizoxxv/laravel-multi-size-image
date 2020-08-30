@@ -1,0 +1,28 @@
+{
+    "name": "guizoxxv/laravel-multi-size-image",
+    "description": "Package to store multi-sized optimized images versions.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gustavo Simões",
+            "email": "guizoxxv@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "intervention/image": "^2.5",
+        "spatie/image-optimizer": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Guizoxxv\\LaravelMultiSizeImage\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Guizoxxv\\LaravelMultiSizeImage\\MultiSizeImageServiceProvider"
+            ]
+        }
+    }
+}
