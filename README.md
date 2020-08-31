@@ -61,8 +61,10 @@ Only mime types defined in the `mime_types` array in the `config/multiSizeImage.
 The default behavior is to create the resized image versions in the same path as the original's. To send the images to a different location you can provide the output path as a second optional parameter.
 
 ```php
-$multiSizeImage->processImage($filePath, $outputPath);
+$multiSizeImage->processImage($filePath, $outputPath, $basePath);
 ```
+
+The `basePath` optional parameter can be used to keep the original file path as of the basePath.
 
 **2.3. Resizing**
 
@@ -99,10 +101,10 @@ If the image width and height are lower than the specified resize value, the ima
 
 If you want to keep the original's file name instead of using a auto-generated one, set `keep_original_name` to `true` in the `config/multiSizeImage.php` file.
 
-You can also provide a optional custom name as a third parameter to the `processImage` method.
+You can also provide a optional custom name as a forth parameter to the `processImage` method.
 
 ```php
-$multiSizeImage->processImage($filePath, $outputPath, $fileName);
+$multiSizeImage->processImage($filePath, $outputPath, $basePath, $fileName);
 ```
 
 **2.5. Optimizing**
