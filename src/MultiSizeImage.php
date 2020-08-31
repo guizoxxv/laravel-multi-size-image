@@ -39,10 +39,11 @@ class MultiSizeImage {
     }
 
     public function processImage(
-        string $path,
+        string $filePath,
         ?string $outputPath = null,
+        ?string $basePath = '',
         ?string $fileName = null
-    ): array
+    ): ?array
     {
         $resizedFilesPaths = [];
 
@@ -50,7 +51,7 @@ class MultiSizeImage {
             // Ignore file if mime type does not match defined
             if (
                 !in_array(
-                    mime_content_type($path),
+                    mime_content_type($filePath),
                     config('multiSizeImage.mime_types')
                 )
             ) {
@@ -61,17 +62,24 @@ class MultiSizeImage {
             if (!$fileName) {
                 // Keep original file name or generate a new one
                 $fileName = config('multiSizeImage.keep_original_name')
-                    ? pathinfo($path, PATHINFO_FILENAME)
+                    ? pathinfo($filePath, PATHINFO_FILENAME)
                     : uniqid();
             }
             
             // Make a new image version for each size defined
             foreach(config('multiSizeImage.sizes') as $size => $sizeValue) {
                 // Create a Intervention image instance
-                $img = ImageFacade::make($path);
+                $img = ImageFacade::make($filePath);
 
                 // Resize image
-                $resizedFilePath = $this->resizeImage($img, $size, $sizeValue, $fileName, $outputPath);
+                $resizedFilePath = $this->resizeImage(
+                    $img,
+                    $size,
+                    $sizeValue,
+                    $fileName,
+                    rtrim($outputPath, '/'),
+                    rtrim($basePath, '/')
+                );
 
                 // Get pathinfo
                 $resizedFilePathInfo = pathinfo($resizedFilePath);
@@ -91,14 +99,14 @@ class MultiSizeImage {
             // Check if original image can be deleted
             if (
                 !config('multiSizeImage.keep_original_file')
-                && !in_array($path, $resizedFilesPaths)
+                && !in_array($filePath, $resizedFilesPaths)
             ) {
                 // Delete original image
-                unlink($path);
+                unlink($filePath);
 
                 if ($outputPath !== null) {
                     // Delete remaining folder if empty
-                    $this->deleteFolderIfEmpty(pathinfo($path, PATHINFO_DIRNAME));
+                    $this->deleteFolderIfEmpty(pathinfo($filePath, PATHINFO_DIRNAME));
                 }
             }
 
@@ -113,7 +121,8 @@ class MultiSizeImage {
         string $size,
         int $sizeValue,
         string $fileName,
-        ?string $outputPath
+        ?string $outputPath,
+        ?string $basePath
     ): string
     {
         // Resize if width or height is above size
@@ -138,11 +147,15 @@ class MultiSizeImage {
         }
 
         if ($outputPath) {
+            // Get image dir relative to basePath
+            $fileDir = ltrim($img->dirname, $basePath);
+            $fileDir = $fileDir ? $fileDir . '/' : '';
+
            // Set output file path based on specified path
-            $outputFilePath = "{$outputPath}/{$fileName}";
-            
+            $outputFilePath = "{$outputPath}/{$fileDir}{$fileName}";
+
             // Create folder if it does not already exists
-            $this->createFolderIfNotExists($outputPath);         
+            $this->createFolderIfNotExists(pathinfo($outputFilePath, PATHINFO_DIRNAME));         
         } else {
             // Set output file path based on original path
             $outputFilePath = "{$img->dirname}/{$fileName}";

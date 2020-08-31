@@ -13,9 +13,7 @@ class MultiSizeImageServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../config/multiSizeImage.php' => config_path('multiSizeImage.php'),
-        ]);
+        //
     }
 
     /**
@@ -25,7 +23,9 @@ class MultiSizeImageServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/multiSizeImage.php', 'multiSizeImage'
+        );
     }
 
 }
