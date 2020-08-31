@@ -64,7 +64,7 @@ The default behavior is to create the resized image versions in the same path as
 $multiSizeImage->processImage($filePath, $outputPath, $basePath);
 ```
 
-The `basePath` optional parameter can be used to keep the original file path as of the basePath.
+The `basePath` optional parameter can be used to keep the original file path as of this path.
 
 **2.3. Resizing**
 

@@ -145,14 +145,18 @@ class MultiSizeImage {
         } else {
             $fileName = $fileName . ".{$img->extension}";
         }
-
+        
         if ($outputPath) {
-            // Get image dir relative to basePath
-            $fileDir = ltrim($img->dirname, $basePath);
-            $fileDir = $fileDir ? $fileDir . '/' : '';
+            if ($basePath) {
+                // Get image dir relative to basePath
+                $fileDir = ltrim($img->dirname, $basePath);
 
-           // Set output file path based on specified path
-            $outputFilePath = "{$outputPath}/{$fileDir}{$fileName}";
+                // Set output file path based on specified path and base path
+                $outputFilePath = "{$outputPath}/{$fileDir}/{$fileName}";
+            } else {
+                // Set output file path based on specified path
+                $outputFilePath = "{$outputPath}/{$fileName}";
+            }
 
             // Create folder if it does not already exists
             $this->createFolderIfNotExists(pathinfo($outputFilePath, PATHINFO_DIRNAME));         
