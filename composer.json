@@ -1,6 +1,6 @@
 {
     "name": "guizoxxv/laravel-multi-size-image",
-    "description": "Package to store multi-sized optimized images versions.",
+    "description": "A Laravel package to optimize and store images in different sizes in order to load the appropriate one according to the screen size.",
     "license": "MIT",
     "authors": [
         {

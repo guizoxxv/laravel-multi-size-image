@@ -1,6 +1,6 @@
 # Laravel Multi Size Image
 
-Laravel package to optimize and stored images in different sizes in order to load the appropriate one according to the screen size.
+A Laravel package to optimize and store images in different sizes in order to load the appropriate one according to the screen size.
 
 ## Pre-requisites
 * To resize the images this package uses the [Intervention library](http://image.intervention.io/) which requires a image library like [GD](https://www.php.net/manual/en/book.image.php) or [ImageMagick](https://www.php.net/manual/en/book.imagick.php).
