@@ -1,10 +1,12 @@
 # Laravel Multi Size Image
 
-Laravel package to optimize and stored images in different sizes in order to load the appropriate one according to the screen size.
+Laravel package to optimize and store images in different sizes in order to load the appropriate one according to the screen size.
 
-## Pre-requisites
+![schema](schema.png)
+
+## Requirements
 * To resize the images this package uses the [Intervention library](http://image.intervention.io/) which requires a image library like [GD](https://www.php.net/manual/en/book.image.php) or [ImageMagick](https://www.php.net/manual/en/book.imagick.php).
-* To optimize the images this package uses [image-optimizer](https://github.com/spatie/image-optimizer) package which requires [optimizers](https://github.com/spatie/image-optimizer#optimization-tools) to be present in your system. This package uses [JpegOptim](http://freshmeat.sourceforge.net/projects/jpegoptim), [Optipng](http://optipng.sourceforge.net/) and [Pngquant 2](https://pngquant.org/) optimizers.
+* To optimize the images this package uses [image-optimizer](https://github.com/spatie/image-optimizer) package which requires [optimizers](https://github.com/spatie/image-optimizer#optimization-tools) to be present in your system.
 
 ## Installation
 Require the package via Composer:
@@ -24,9 +26,9 @@ A `config/multiSizeImage.php` file will be added in your project.
 
 ## Usage
 
-**1. Instantiate**
+### 1. Instantiate
 
-To apply Multi Size Image first you must create a instance of it.
+To apply Multi Size Image first you must create an instance of it.
 
 ```php
 use Guizoxxv\LaravelMultiSizeImage\MultiSizeImage;
@@ -36,7 +38,7 @@ use Guizoxxv\LaravelMultiSizeImage\MultiSizeImage;
 $multiSizeImage = new MultiSizeImage();
 ```
 
-**2. Process image**
+### 2. Process image
 
 Call the `processImage` method passing the file path as the first argument.
 
@@ -50,13 +52,13 @@ $multiSizeImage->processImage($filePath);
 
 The method returns an array of strings with the full path of the generated files.
 
-**2.1. Mime types**
+#### 2.1. Mime types
 
-Only mime types defined in the `mime_types` array in the `config/multiSizeImage.php` file are considered. If a file with mime type not present is used, it is ignored and the method retuns `null`.
+Only mime types defined in the `mime_types` array in the `config/multiSizeImage.php` file are considered. If a file with mime type not present is used, it is ignored and the method returns `null`.
 
 > This package is configured to optimize `jpeg` and `png` images. Check the [Optimizing](#optimizing) section to learn how to optimize images with other mime types.
 
-**2.2. Output path**
+#### 2.2. Output path
 
 The default behavior is to create the resized image versions in the same path as the original's. To send the images to a different location you can provide the output path as a second optional parameter.
 
@@ -66,9 +68,9 @@ $multiSizeImage->processImage($filePath, $outputPath, $basePath);
 
 The `basePath` optional parameter can be used to keep the original file path as of this path.
 
-**2.3. Resizing**
+#### 2.3. Resizing
 
-The resizable values are defined by the `sizes` array in the `config/multiSizeImage.php` file. This array has the keys as the size identification and the value as the size for the image be resized to.
+The resizable values are defined by the `sizes` array in the `config/multiSizeImage.php` file. This array has the keys as the size identification and the value as the size for the image to be resized to.
 
 ```php
 'sizes' => [
@@ -78,7 +80,7 @@ The resizable values are defined by the `sizes` array in the `config/multiSizeIm
 ]
 ```
 
-Above are the default values. The biggest dimmension is considered when resizing and the aspect ratio is kept. An auto-generated name will be used as the new file name. The size identification is used as a suffix in the file name to distinct which will be loaded.
+Above are the default values. The biggest dimension is considered when resizing and the aspect ratio is kept. An auto-generated name will be used as the new file name. The size identification is used as a suffix in the file name to distinguish which will be loaded.
 
 
 > **Example:**
@@ -97,17 +99,17 @@ If the image width and height are lower than the specified resize value, the ima
 > * 5f4bd0444e9dd.png (100x200px)
 > * 5f4bd0444e9dd@tb.png (75x150px)
 
-**2.4. File name**
+#### 2.4. File name
 
-If you want to keep the original's file name instead of using a auto-generated one, set `keep_original_name` to `true` in the `config/multiSizeImage.php` file.
+If you want to keep the original's file name instead of using an auto-generated one, set `keep_original_name` to `true` in the `config/multiSizeImage.php` file.
 
-You can also provide a optional custom name as a forth parameter to the `processImage` method.
+You can also provide an optional custom name as a forth parameter to the `processImage` method.
 
 ```php
 $multiSizeImage->processImage($filePath, $outputPath, $basePath, $fileName);
 ```
 
-**2.5. Optimizing**
+#### 2.5. Optimizing
 
 By default the newly generate image is also optimized using [image-optimizer](https://github.com/spatie/image-optimizer) package with [JpegOptim](http://freshmeat.sourceforge.net/projects/jpegoptim), [Optipng](http://optipng.sourceforge.net/) and [Pngquant 2](https://pngquant.org/) optimizers with the following `OptimizerChain`.
 
@@ -174,12 +176,12 @@ $multiSizeImage = new MultiSizeImage($optimizerChain);
 
 You can also disable optimization by setting `optimize` to `false` in the `config/multiSizeImage.php` file.
 
-**2.6. Delete original**
+#### 2.6. Delete original
 
-The default behavior is to delete the original image after processing if the resized files names don't match the original's (changed name or path). If you choose to keep it set set `keep_original_file` to `true` in the `config/multiSizeImage.php` file.
+The default behavior is to delete the original image after processing if the resized files names don't match the original's (changed name or path). If you choose to keep it, set `keep_original_file` to `true` in the `config/multiSizeImage.php` file.
 
-**3. Render**
+### 3. Render
 
 Render the image file according to the screen size.
 
-> Remenber to provide a fallback in case the image name does not have a suffix.
+> Remember to provide a fallback in case the image name does not have a suffix.
