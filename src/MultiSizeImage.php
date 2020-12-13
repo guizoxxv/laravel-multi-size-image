@@ -149,7 +149,8 @@ class MultiSizeImage {
         if ($outputPath) {
             if ($basePath) {
                 // Get image dir relative to basePath
-                $fileDir = ltrim($img->dirname, $basePath);
+                $prefix = preg_quote($basePath, '/');
+                $fileDir = preg_replace("/^{$prefix}/", '', $img->dirname);
 
                 // Set output file path based on specified path and base path
                 $outputFilePath = "{$outputPath}/{$fileDir}/{$fileName}";
