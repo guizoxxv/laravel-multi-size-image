@@ -139,12 +139,10 @@ class MultiSizeImage {
                     $constraint->aspectRatio(); // maintain aspect ration
                     $constraint->upsize(); // prevent upsizing
                 });
-            }
-
-            $fileName = $fileName . "@{$size}.{$img->extension}";
-        } else {
-            $fileName = $fileName . ".{$img->extension}";
+            }   
         }
+
+        $fileName = $fileName . "@{$size}.{$img->extension}";
         
         if ($outputPath) {
             if ($basePath) {
